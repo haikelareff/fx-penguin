@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Header } from "@/components/header"
-import { Calendar, ChevronRight, Clock, Globe, Newspaper, Star, Users, Zap } from "lucide-react"
+import { Calendar, ChevronRight, Clock, Globe, Newspaper, Star, Users, Zap, ExternalLink } from "lucide-react"
 
 const topBrokers = [
   {
@@ -45,6 +45,90 @@ const topBrokers = [
     leverage: "1:300",
     regulation: "CySEC, IFSC",
     features: ["Automated Trading", "Risk Management", "24/7 Support"],
+  },
+  {
+    id: 4,
+    name: "GlobalFX",
+    logo: "/placeholder-logo.svg",
+    rating: 4.5,
+    reviews: 1432,
+    minDeposit: "$200",
+    spread: "0.2 pips",
+    leverage: "1:400",
+    regulation: "FCA, ASIC",
+    features: ["Institutional Grade", "DMA Access", "Premium Support"],
+  },
+  {
+    id: 5,
+    name: "EliteTrade",
+    logo: "/placeholder-logo.svg",
+    rating: 4.4,
+    reviews: 1298,
+    minDeposit: "$500",
+    spread: "0.1 pips",
+    leverage: "1:200",
+    regulation: "FCA, CySEC",
+    features: ["Raw Spreads", "VIP Service", "Advanced Tools"],
+  },
+  {
+    id: 6,
+    name: "SwiftForex",
+    logo: "/placeholder-logo.svg",
+    rating: 4.3,
+    reviews: 1156,
+    minDeposit: "$100",
+    spread: "0.3 pips",
+    leverage: "1:500",
+    regulation: "ASIC, CySEC",
+    features: ["Fast Execution", "Mobile Trading", "Educational Resources"],
+  },
+  {
+    id: 7,
+    name: "ProTrader",
+    logo: "/placeholder-logo.svg",
+    rating: 4.2,
+    reviews: 987,
+    minDeposit: "$300",
+    spread: "0.2 pips",
+    leverage: "1:300",
+    regulation: "FCA, IFSC",
+    features: ["Professional Tools", "Market Analysis", "Copy Trading"],
+  },
+  {
+    id: 8,
+    name: "TradingEdge",
+    logo: "/placeholder-logo.svg",
+    rating: 4.1,
+    reviews: 876,
+    minDeposit: "$150",
+    spread: "0.4 pips",
+    leverage: "1:400",
+    regulation: "CySEC, FCA",
+    features: ["Edge Technology", "Social Trading", "Risk Tools"],
+  },
+  {
+    id: 9,
+    name: "MarketMaker",
+    logo: "/placeholder-logo.svg",
+    rating: 4.0,
+    reviews: 743,
+    minDeposit: "$250",
+    spread: "0.3 pips",
+    leverage: "1:200",
+    regulation: "ASIC, FCA",
+    features: ["Market Making", "Liquidity Pool", "Institutional"],
+  },
+  {
+    id: 10,
+    name: "FXMaster",
+    logo: "/placeholder-logo.svg",
+    rating: 3.9,
+    reviews: 654,
+    minDeposit: "$100",
+    spread: "0.5 pips",
+    leverage: "1:500",
+    regulation: "CySEC, IFSC",
+    features: ["Master Account", "Trading Signals", "Education"],
   },
 ]
 
@@ -165,67 +249,75 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {topBrokers.map((broker) => (
+          {/* Broker List Layout */}
+          <div className="space-y-4 mb-8">
+            {topBrokers.map((broker, index) => (
               <Card key={broker.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <img src={broker.logo || "/placeholder.svg"} alt={broker.name} className="w-10 h-10 rounded-lg" />
-                      <div>
-                        <CardTitle className="text-lg">{broker.name}</CardTitle>
-                        <div className="flex items-center space-x-1">
-                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-semibold">{broker.rating}</span>
-                          <span className="text-sm text-muted-foreground">({broker.reviews} reviews)</span>
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+                    {/* Broker Info */}
+                    <div className="flex-1">
+                      <div className="flex items-start gap-3 mb-4">
+                        <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-lg text-primary font-bold text-sm">
+                          #{index + 1}
+                        </div>
+                        <img
+                          src={broker.logo || "/placeholder.svg"}
+                          alt={broker.name}
+                          className="w-10 h-10 rounded-lg"
+                        />
+                        <div className="flex-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                            <h3 className="text-lg font-bold">{broker.name}</h3>
+                            <div className="flex items-center space-x-1">
+                              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                              <span className="font-semibold">{broker.rating}</span>
+                              <span className="text-sm text-muted-foreground">({broker.reviews} reviews)</span>
+                            </div>
+                          </div>
+
+                          {/* 4 Column Layout for Key Info */}
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
+                            <div className="text-center p-2 bg-muted/50 rounded-lg">
+                              <div className="text-xs font-medium text-muted-foreground">Min Deposit</div>
+                              <div className="text-sm font-semibold">{broker.minDeposit}</div>
+                            </div>
+                            <div className="text-center p-2 bg-muted/50 rounded-lg">
+                              <div className="text-xs font-medium text-muted-foreground">Spread</div>
+                              <div className="text-sm font-semibold">{broker.spread}</div>
+                            </div>
+                            <div className="text-center p-2 bg-muted/50 rounded-lg">
+                              <div className="text-xs font-medium text-muted-foreground">Leverage</div>
+                              <div className="text-sm font-semibold">{broker.leverage}</div>
+                            </div>
+                            <div className="text-center p-2 bg-muted/50 rounded-lg">
+                              <div className="text-xs font-medium text-muted-foreground">Regulation</div>
+                              <div className="text-sm font-semibold">{broker.regulation.split(",")[0]}</div>
+                            </div>
+                          </div>
+
+                          {/* Features */}
+                          <div className="flex flex-wrap gap-1">
+                            {broker.features.map((feature, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs">
+                                {feature}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <Badge className="bg-primary/10 text-primary hover:bg-primary/20">
-                      {broker.regulation.split(",")[0]}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Min Deposit:</span>
-                      <p className="font-semibold">{broker.minDeposit}</p>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Spread:</span>
-                      <p className="font-semibold">{broker.spread}</p>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Leverage:</span>
-                      <p className="font-semibold">{broker.leverage}</p>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Regulation:</span>
-                      <p className="font-semibold">{broker.regulation}</p>
-                    </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium">Key Features:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {broker.features.map((feature, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {feature}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex space-x-2 pt-2">
-                    <Link href={`/broker/${broker.name.toLowerCase().replace(/\s+/g, "-")}`} className="flex-1">
-                      <Button variant="outline" className="w-md bg-transparent">
-                        View Details
+                    {/* CTA Section */}
+                    <div className="lg:w-48 flex flex-col gap-2">
+                      <Link href={`/broker/${broker.name.toLowerCase().replace(/\s+/g, "-")}`}>
+                        <Button className="w-full text-sm">View Details</Button>
+                      </Link>
+                      <Button variant="outline" className="w-full bg-transparent text-sm">
+                        <ExternalLink className="h-3 w-3 mr-2" />
+                        Visit Website
                       </Button>
-                    </Link>
-                    <Link href={`/broker/${broker.name.toLowerCase().replace(/\s+/g, "-")}/review`} className="flex-1">
-                      <Button className="w-md">Read Reviews</Button>
-                    </Link>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -280,22 +372,23 @@ export default function HomePage() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Min Deposit:</span>
-                      <p className="font-semibold">{broker.minDeposit}</p>
+                  {/* 4 Column Layout for Key Info */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="text-center p-2 bg-muted/50 rounded-lg">
+                      <div className="text-xs font-medium text-muted-foreground">Min Deposit</div>
+                      <div className="text-sm font-semibold">{broker.minDeposit}</div>
                     </div>
-                    <div>
-                      <span className="text-muted-foreground">Spread:</span>
-                      <p className="font-semibold">{broker.spread}</p>
+                    <div className="text-center p-2 bg-muted/50 rounded-lg">
+                      <div className="text-xs font-medium text-muted-foreground">Spread</div>
+                      <div className="text-sm font-semibold">{broker.spread}</div>
                     </div>
-                    <div>
-                      <span className="text-muted-foreground">Leverage:</span>
-                      <p className="font-semibold">{broker.leverage}</p>
+                    <div className="text-center p-2 bg-muted/50 rounded-lg">
+                      <div className="text-xs font-medium text-muted-foreground">Leverage</div>
+                      <div className="text-sm font-semibold">{broker.leverage}</div>
                     </div>
-                    <div>
-                      <span className="text-muted-foreground">Regulation:</span>
-                      <p className="font-semibold">{broker.regulation}</p>
+                    <div className="text-center p-2 bg-muted/50 rounded-lg">
+                      <div className="text-xs font-medium text-muted-foreground">Regulation</div>
+                      <div className="text-sm font-semibold">{broker.regulation}</div>
                     </div>
                   </div>
 
