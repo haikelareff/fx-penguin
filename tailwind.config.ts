@@ -53,12 +53,6 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        forex: {
-          green: "hsl(var(--forex-green))",
-          darkGreen: "hsl(var(--forex-darkGreen))",
-          blue: "hsl(var(--forex-blue))",
-          darkBlue: "hsl(var(--forex-darkBlue))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",

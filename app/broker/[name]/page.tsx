@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation"
-import { getBrokerByName } from "@/data/brokers"
-import { BrokerDetailPage } from "@/components/broker-detail-page"
-import { Header } from "@/components/header"
+import { brokers } from "@/data/brokers"
+import BrokerDetailPage from "@/components/broker-detail-page"
 
 interface BrokerPageProps {
   params: {
@@ -9,25 +8,19 @@ interface BrokerPageProps {
   }
 }
 
+export async function generateStaticParams() {
+  return brokers.map((broker) => ({
+    name: broker.brokerName.toLowerCase().replace(/\s+/g, "-"),
+  }))
+}
+
 export default function BrokerPage({ params }: BrokerPageProps) {
-  const broker = getBrokerByName(params.name)
+  const brokerSlug = params.name
+  const broker = brokers.find((b) => b.brokerName.toLowerCase().replace(/\s+/g, "-") === brokerSlug)
 
   if (!broker) {
     notFound()
   }
 
-  return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Header />
-      <BrokerDetailPage broker={broker} />
-    </div>
-  )
-}
-
-export async function generateStaticParams() {
-  const { brokersData, getBrokerSlug } = await import("@/data/brokers")
-
-  return brokersData.map((broker) => ({
-    name: getBrokerSlug(broker.brokerName),
-  }))
+  return <BrokerDetailPage broker={broker} />
 }

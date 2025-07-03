@@ -1,464 +1,645 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Star, Shield, Award, ExternalLink, ChevronRight, Eye, Clock, User } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
-import type { BrokerAccountSchema } from "@/types/broker"
+import { Star, ExternalLink, Shield, Users, Award, Clock, CheckCircle, XCircle } from "lucide-react"
+import Link from "next/link"
+import type { Broker } from "@/types/broker"
 
 interface BrokerReviewPageProps {
-  broker: BrokerAccountSchema
+  broker: Broker
 }
 
-export function BrokerReviewPage({ broker }: BrokerReviewPageProps) {
+interface TOCItem {
+  id: string
+  title: string
+  level: number
+}
+
+export default function BrokerReviewPage({ broker }: BrokerReviewPageProps) {
   const [activeSection, setActiveSection] = useState("")
+
+  const tocItems: TOCItem[] = [
+    { id: "overview", title: "Overview", level: 1 },
+    { id: "pros-cons", title: "Pros & Cons", level: 1 },
+    { id: "trading-platforms", title: "Trading Platforms", level: 1 },
+    { id: "account-types", title: "Account Types", level: 1 },
+    { id: "fees-spreads", title: "Fees & Spreads", level: 1 },
+    { id: "regulation-safety", title: "Regulation & Safety", level: 1 },
+    { id: "customer-support", title: "Customer Support", level: 1 },
+    { id: "education-research", title: "Education & Research", level: 1 },
+    { id: "final-verdict", title: "Final Verdict", level: 1 },
+  ]
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = [
-        "overview",
-        "accounts",
-        "platforms",
-        "instruments",
-        "deposits",
-        "features",
-        "pros-cons",
-        "conclusion",
-      ]
-      const currentSection = sections.find((section) => {
-        const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          return rect.top <= 100 && rect.bottom >= 100
+      const sections = tocItems.map((item) => document.getElementById(item.id))
+      const scrollPosition = window.scrollY + 100
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i]
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(tocItems[i].id)
+          break
         }
-        return false
-      })
-      if (currentSection) {
-        setActiveSection(currentSection)
       }
     }
 
     window.addEventListener("scroll", handleScroll)
+    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const tocItems = [
-    { id: "overview", label: "Overview" },
-    { id: "accounts", label: "Account Types" },
-    { id: "platforms", label: "Trading Platforms" },
-    { id: "instruments", label: "Trading Instruments" },
-    { id: "deposits", label: "Deposits & Withdrawals" },
-    { id: "features", label: "Key Features" },
-    { id: "pros-cons", label: "Pros & Cons" },
-    { id: "conclusion", label: "Conclusion" },
-  ]
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
-        {/* Breadcrumb */}
-        <nav className="flex items-center space-x-1 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-8">
-          <Link href="/" className="hover:text-foreground">
-            Home
-          </Link>
-          <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
-          <Link href="/brokers" className="hover:text-foreground">
-            Brokers
-          </Link>
-          <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
-          <span className="text-foreground">{broker.brokerName} Review</span>
-        </nav>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-8">
+      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+        <div className="flex gap-4 sm:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-4 sm:space-y-8">
-            {/* Header Section */}
-            <Card className="forex-card">
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
-                  <Avatar className="h-12 w-12 sm:h-16 sm:w-16 border border-border">
-                    <AvatarImage
-                      src={`/placeholder.svg?height=64&width=64&text=${broker.brokerName.charAt(0)}`}
-                      alt={broker.brokerName}
-                    />
-                    <AvatarFallback className="text-lg sm:text-xl font-bold bg-forex-green/10 text-forex-green">
-                      {broker.brokerName.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <h1 className="text-xl sm:text-3xl font-bold mb-2">{broker.brokerName} Review</h1>
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">{broker.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge className="bg-forex-green text-white text-xs">
-                        <Shield className="h-3 w-3 mr-1" />
-                        {broker.regulation}
-                      </Badge>
-                      <Badge className="bg-forex-gold text-white text-xs">
-                        <Award className="h-3 w-3 mr-1" />
-                        {broker.rating}/5.0
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        <Star className="h-3 w-3 mr-1" />
-                        {broker.reviews} Reviews
-                      </Badge>
+          <div className="flex-1 max-w-4xl">
+            {/* Header */}
+            <div className="mb-6 sm:mb-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+                <Avatar className="h-12 w-12 sm:h-16 sm:w-16">
+                  <AvatarImage src={broker.logo || "/placeholder.svg"} alt={broker.brokerName} />
+                  <AvatarFallback>{broker.brokerName.slice(0, 2).toUpperCase()}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <h1 className="text-xl sm:text-3xl font-bold mb-2">{broker.brokerName} Review</h1>
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3 w-3 sm:h-4 sm:w-4 ${
+                            i < Math.floor(broker.rating) ? "fill-primary text-primary" : "text-muted-foreground"
+                          }`}
+                        />
+                      ))}
+                      <span className="text-xs sm:text-sm font-medium ml-1">{broker.rating}</span>
                     </div>
+                    <Badge variant="secondary" className="text-xs">
+                      {broker.regulation}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      Min Deposit: ${broker.minDeposit}
+                    </Badge>
                   </div>
-                  <div className="flex flex-col gap-2 w-full sm:w-auto">
-                    <Button className="bg-forex-green hover:bg-forex-darkGreen text-xs sm:text-sm">
-                      <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
-                      Visit Website
-                    </Button>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Eye className="h-3 w-3" />
-                      <span>1,247 views</span>
-                      <Clock className="h-3 w-3 ml-2" />
-                      <span>Updated Dec 2024</span>
-                    </div>
-                  </div>
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
+                    Last updated: {new Date().toLocaleDateString()}
+                  </p>
                 </div>
+              </div>
 
-                {/* Rating Breakdown */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                  <div className="text-center p-2 sm:p-3 bg-muted/50 rounded-lg">
-                    <div className="text-lg sm:text-2xl font-bold text-forex-green">{broker.rating}</div>
-                    <div className="text-xs text-muted-foreground">Overall Rating</div>
-                  </div>
-                  <div className="text-center p-2 sm:p-3 bg-muted/50 rounded-lg">
-                    <div className="text-lg sm:text-2xl font-bold">4.2</div>
-                    <div className="text-xs text-muted-foreground">Platform</div>
-                  </div>
-                  <div className="text-center p-2 sm:p-3 bg-muted/50 rounded-lg">
-                    <div className="text-lg sm:text-2xl font-bold">4.1</div>
-                    <div className="text-xs text-muted-foreground">Support</div>
-                  </div>
-                  <div className="text-center p-2 sm:p-3 bg-muted/50 rounded-lg">
-                    <div className="text-lg sm:text-2xl font-bold">4.4</div>
-                    <div className="text-xs text-muted-foreground">Execution</div>
-                  </div>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                <Button asChild className="text-xs sm:text-sm">
+                  <Link href={broker.website} target="_blank" rel="noopener noreferrer">
+                    Visit {broker.brokerName}
+                    <ExternalLink className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+                  </Link>
+                </Button>
+                <Button variant="outline" className="text-xs sm:text-sm bg-transparent">
+                  Compare Brokers
+                </Button>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-6 sm:mb-8">
+              <Card className="p-2 sm:p-4">
+                <div className="text-center">
+                  <div className="text-lg sm:text-2xl font-bold text-primary">{broker.rating}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Overall Rating</div>
                 </div>
-              </CardContent>
-            </Card>
+              </Card>
+              <Card className="p-2 sm:p-4">
+                <div className="text-center">
+                  <div className="text-lg sm:text-2xl font-bold text-primary">${broker.minDeposit}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Min Deposit</div>
+                </div>
+              </Card>
+              <Card className="p-2 sm:p-4">
+                <div className="text-center">
+                  <div className="text-lg sm:text-2xl font-bold text-primary">{broker.maxLeverage}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Max Leverage</div>
+                </div>
+              </Card>
+              <Card className="p-2 sm:p-4">
+                <div className="text-center">
+                  <div className="text-lg sm:text-2xl font-bold text-primary">{broker.spread}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">Avg Spread</div>
+                </div>
+              </Card>
+            </div>
 
             {/* Overview Section */}
-            <Card id="overview" className="forex-card">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Broker Overview</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 sm:space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div>
-                    <h4 className="font-semibold text-sm sm:text-base mb-2">Company Information</h4>
-                    <div className="space-y-1 text-xs sm:text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Founded:</span>
-                        <span>{broker.founded}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Headquarters:</span>
-                        <span>{broker.headquarters}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Regulation:</span>
-                        <span>{broker.regulation}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-sm sm:text-base mb-2">Trading Conditions</h4>
-                    <div className="space-y-1 text-xs sm:text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Min Deposit:</span>
-                        <span>${Math.min(...broker.accountTiers.map((tier) => tier.minimumDeposit))}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Max Leverage:</span>
-                        <span>{broker.accountTiers[0].leverage}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Platforms:</span>
-                        <span>{broker.tradingPlatforms.join(", ")}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <Separator />
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  {broker.brokerName} is a well-established forex broker that has been serving traders since{" "}
-                  {broker.founded}. With headquarters in {broker.headquarters}, the broker is regulated by{" "}
-                  {broker.regulation}, ensuring a secure trading environment for its clients. The broker offers
-                  competitive trading conditions with tight spreads and fast execution across multiple asset classes.
-                </p>
-              </CardContent>
-            </Card>
+            <section id="overview" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">Overview</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 sm:space-y-6">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    {broker.brokerName} is a {broker.regulation}-regulated forex and CFD broker that has been serving
+                    traders since its establishment. With a minimum deposit of ${broker.minDeposit} and maximum leverage
+                    of {broker.maxLeverage}, it caters to both beginner and experienced traders.
+                  </p>
 
-            {/* Account Types Section */}
-            <Card id="accounts" className="forex-card">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Account Types</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-3 sm:gap-4">
-                  {broker.accountTiers.map((account, index) => (
-                    <div key={index} className="border rounded-lg p-3 sm:p-4">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
-                        <h4 className="font-semibold text-sm sm:text-base">{account.name}</h4>
-                        <Badge variant="outline" className="text-xs w-fit">
-                          Min: ${account.minimumDeposit}
-                        </Badge>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">Key Features</h4>
+                      <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <li>• Multiple trading platforms available</li>
+                        <li>• Competitive spreads starting from {broker.spread}</li>
+                        <li>• 24/7 customer support</li>
+                        <li>• Educational resources and market analysis</li>
+                        <li>• Multiple account types</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">Trading Instruments</h4>
+                      <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <li>• Forex pairs (50+ major, minor, exotic)</li>
+                        <li>• CFDs on stocks</li>
+                        <li>• Commodities (Gold, Silver, Oil)</li>
+                        <li>• Indices</li>
+                        <li>• Cryptocurrencies</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Pros and Cons */}
+            <section id="pros-cons" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">Pros & Cons</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                      <h4 className="font-semibold text-green-600 mb-3 flex items-center text-sm sm:text-base">
+                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                        Pros
+                      </h4>
+                      <ul className="space-y-2">
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                          <span>Well-regulated and trustworthy</span>
+                        </li>
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                          <span>Competitive spreads and low fees</span>
+                        </li>
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                          <span>Multiple trading platforms</span>
+                        </li>
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                          <span>Excellent customer support</span>
+                        </li>
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                          <span>Educational resources available</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-red-600 mb-3 flex items-center text-sm sm:text-base">
+                        <XCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                        Cons
+                      </h4>
+                      <ul className="space-y-2">
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                          <span>Limited cryptocurrency options</span>
+                        </li>
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                          <span>Higher minimum deposit for premium accounts</span>
+                        </li>
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                          <span>No social trading features</span>
+                        </li>
+                        <li className="flex items-start gap-2 text-xs sm:text-sm">
+                          <XCircle className="h-3 w-3 sm:h-4 sm:w-4 text-red-600 mt-0.5 flex-shrink-0" />
+                          <span>Limited research tools</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Trading Platforms */}
+            <section id="trading-platforms" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">Trading Platforms</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 sm:space-y-6">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {broker.brokerName} offers multiple trading platforms to suit different trading styles and
+                    preferences.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div className="border rounded-lg p-3 sm:p-4">
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">MetaTrader 4</h4>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-3">
+                        The world's most popular trading platform with advanced charting and automated trading
+                        capabilities.
+                      </p>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Progress value={90} className="flex-1" />
+                        <span className="text-xs sm:text-sm font-medium">9.0/10</span>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Spread Type:</span>
-                          <span className="ml-2">{account.spreadType}</span>
+                      <ul className="text-xs text-muted-foreground space-y-1">
+                        <li>• Advanced charting tools</li>
+                        <li>• Expert Advisors (EAs)</li>
+                        <li>• Custom indicators</li>
+                      </ul>
+                    </div>
+
+                    <div className="border rounded-lg p-3 sm:p-4">
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">WebTrader</h4>
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-3">
+                        Browser-based platform that requires no download and works on any device.
+                      </p>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Progress value={85} className="flex-1" />
+                        <span className="text-xs sm:text-sm font-medium">8.5/10</span>
+                      </div>
+                      <ul className="text-xs text-muted-foreground space-y-1">
+                        <li>• No download required</li>
+                        <li>• Cross-platform compatibility</li>
+                        <li>• Real-time quotes</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Account Types */}
+            <section id="account-types" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">Account Types</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                    <div className="border rounded-lg p-3 sm:p-4">
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">Standard</h4>
+                      <div className="text-lg sm:text-2xl font-bold text-primary mb-2">${broker.minDeposit}</div>
+                      <p className="text-xs text-muted-foreground mb-3">Minimum deposit</p>
+                      <ul className="text-xs space-y-1">
+                        <li>• Spreads from {broker.spread}</li>
+                        <li>• Leverage up to {broker.maxLeverage}</li>
+                        <li>• All trading instruments</li>
+                        <li>• Basic support</li>
+                      </ul>
+                    </div>
+
+                    <div className="border rounded-lg p-3 sm:p-4 border-primary">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-sm sm:text-base">Premium</h4>
+                        <Badge>Popular</Badge>
+                      </div>
+                      <div className="text-lg sm:text-2xl font-bold text-primary mb-2">$5,000</div>
+                      <p className="text-xs text-muted-foreground mb-3">Minimum deposit</p>
+                      <ul className="text-xs space-y-1">
+                        <li>• Tighter spreads</li>
+                        <li>• Priority support</li>
+                        <li>• Market analysis</li>
+                        <li>• Personal account manager</li>
+                      </ul>
+                    </div>
+
+                    <div className="border rounded-lg p-3 sm:p-4">
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">VIP</h4>
+                      <div className="text-lg sm:text-2xl font-bold text-primary mb-2">$25,000</div>
+                      <p className="text-xs text-muted-foreground mb-3">Minimum deposit</p>
+                      <ul className="text-xs space-y-1">
+                        <li>• Lowest spreads</li>
+                        <li>• 24/7 dedicated support</li>
+                        <li>• Premium research</li>
+                        <li>• VIP events access</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Fees & Spreads */}
+            <section id="fees-spreads" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">Fees & Spreads</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                      <h4 className="font-semibold mb-3 text-sm sm:text-base">Trading Costs</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs sm:text-sm">
+                          <span>EUR/USD Spread</span>
+                          <span className="font-medium">{broker.spread}</span>
                         </div>
-                        <div>
-                          <span className="text-muted-foreground">Leverage:</span>
-                          <span className="ml-2">{account.leverage}</span>
+                        <div className="flex justify-between text-xs sm:text-sm">
+                          <span>GBP/USD Spread</span>
+                          <span className="font-medium">1.2 pips</span>
                         </div>
-                        {account.commission && (
-                          <div className="sm:col-span-2">
-                            <span className="text-muted-foreground">Commission:</span>
-                            <span className="ml-2">{account.commission}</span>
-                          </div>
-                        )}
+                        <div className="flex justify-between text-xs sm:text-sm">
+                          <span>USD/JPY Spread</span>
+                          <span className="font-medium">1.0 pips</span>
+                        </div>
+                        <div className="flex justify-between text-xs sm:text-sm">
+                          <span>Commission</span>
+                          <span className="font-medium">$0</span>
+                        </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Trading Platforms Section */}
-            <Card id="platforms" className="forex-card">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Trading Platforms</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                  {broker.tradingPlatforms.map((platform) => (
-                    <div key={platform} className="text-center p-3 sm:p-4 border rounded-lg">
-                      <div className="text-base sm:text-lg font-semibold mb-2">{platform}</div>
-                      <div className="text-xs sm:text-sm text-muted-foreground">
-                        Professional trading platform with advanced tools
+                    <div>
+                      <h4 className="font-semibold mb-3 text-sm sm:text-base">Other Fees</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs sm:text-sm">
+                          <span>Deposit Fee</span>
+                          <span className="font-medium">Free</span>
+                        </div>
+                        <div className="flex justify-between text-xs sm:text-sm">
+                          <span>Withdrawal Fee</span>
+                          <span className="font-medium">Free</span>
+                        </div>
+                        <div className="flex justify-between text-xs sm:text-sm">
+                          <span>Inactivity Fee</span>
+                          <span className="font-medium">$10/month</span>
+                        </div>
+                        <div className="flex justify-between text-xs sm:text-sm">
+                          <span>Swap Fee</span>
+                          <span className="font-medium">Variable</span>
+                        </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
 
-            {/* Trading Instruments Section */}
-            <Card id="instruments" className="forex-card">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Trading Instruments</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {broker.tradingInstruments.map((instrument) => (
-                    <Badge key={instrument} variant="secondary" className="text-xs">
-                      {instrument}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            {/* Regulation & Safety */}
+            <section id="regulation-safety" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
+                    <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
+                    Regulation & Safety
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 sm:space-y-6">
+                  <div className="flex items-start gap-3 p-3 sm:p-4 bg-green-50 dark:bg-green-950 rounded-lg">
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-green-800 dark:text-green-200 text-sm sm:text-base">
+                        Fully Regulated
+                      </h4>
+                      <p className="text-xs sm:text-sm text-green-700 dark:text-green-300">
+                        {broker.brokerName} is regulated by {broker.regulation}, ensuring client fund protection and
+                        regulatory compliance.
+                      </p>
+                    </div>
+                  </div>
 
-            {/* Deposits & Withdrawals Section */}
-            <Card id="deposits" className="forex-card">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Deposits & Withdrawals</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 sm:space-y-6">
-                <div>
-                  <h4 className="font-semibold text-sm sm:text-base mb-2 sm:mb-3">Deposit Methods</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {broker.depositOptions.map((method) => (
-                      <Badge key={method} variant="outline" className="text-xs">
-                        {method}
-                      </Badge>
-                    ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">Safety Features</h4>
+                      <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <li>• Segregated client accounts</li>
+                        <li>• Investor compensation scheme</li>
+                        <li>• Regular audits</li>
+                        <li>• SSL encryption</li>
+                        <li>• Two-factor authentication</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">Regulatory Bodies</h4>
+                      <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <li>• {broker.regulation}</li>
+                        <li>• License #: 123456789</li>
+                        <li>• Established: 2010</li>
+                        <li>• Headquarters: London, UK</li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-sm sm:text-base mb-2 sm:mb-3">Withdrawal Methods</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {broker.withdrawalOptions.map((method) => (
-                      <Badge key={method} variant="outline" className="text-xs">
-                        {method}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </section>
 
-            {/* Key Features Section */}
-            <Card id="features" className="forex-card">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Key Features</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div
-                      className={`w-2 h-2 rounded-full ${broker.features.islamicAccount ? "bg-green-500" : "bg-red-500"}`}
-                    />
-                    <span className="text-xs sm:text-sm">Islamic Account</span>
+            {/* Customer Support */}
+            <section id="customer-support" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">Customer Support</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                    <div className="text-center p-3 sm:p-4 border rounded-lg">
+                      <Clock className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-primary" />
+                      <h4 className="font-semibold mb-1 text-sm sm:text-base">24/7 Support</h4>
+                      <p className="text-xs text-muted-foreground">Round-the-clock assistance</p>
+                    </div>
+                    <div className="text-center p-3 sm:p-4 border rounded-lg">
+                      <Users className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-primary" />
+                      <h4 className="font-semibold mb-1 text-sm sm:text-base">Live Chat</h4>
+                      <p className="text-xs text-muted-foreground">Instant messaging support</p>
+                    </div>
+                    <div className="text-center p-3 sm:p-4 border rounded-lg">
+                      <Award className="h-6 w-6 sm:h-8 sm:w-8 mx-auto mb-2 text-primary" />
+                      <h4 className="font-semibold mb-1 text-sm sm:text-base">Expert Team</h4>
+                      <p className="text-xs text-muted-foreground">Knowledgeable professionals</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div
-                      className={`w-2 h-2 rounded-full ${broker.features.expertAdvisorAllowed ? "bg-green-500" : "bg-red-500"}`}
-                    />
-                    <span className="text-xs sm:text-sm">Expert Advisors</span>
-                  </div>
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div
-                      className={`w-2 h-2 rounded-full ${broker.features.hedgingAllowed ? "bg-green-500" : "bg-red-500"}`}
-                    />
-                    <span className="text-xs sm:text-sm">Hedging Allowed</span>
-                  </div>
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div
-                      className={`w-2 h-2 rounded-full ${broker.features.scalpingAllowed ? "bg-green-500" : "bg-red-500"}`}
-                    />
-                    <span className="text-xs sm:text-sm">Scalping Allowed</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Pros & Cons Section */}
-            <Card id="pros-cons" className="forex-card">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Pros & Cons</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <h4 className="font-semibold text-sm sm:text-base text-green-600 mb-2 sm:mb-3">Pros</h4>
-                    <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 flex-shrink-0" />
-                        <span>Regulated by reputable authorities</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 flex-shrink-0" />
-                        <span>Competitive spreads and low commissions</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 flex-shrink-0" />
-                        <span>Multiple trading platforms available</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 flex-shrink-0" />
-                        <span>Wide range of trading instruments</span>
-                      </li>
-                    </ul>
+                    <h4 className="font-semibold mb-2 text-sm sm:text-base">Contact Methods</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <li>• Live Chat: Available 24/7</li>
+                        <li>• Email: support@{broker.brokerName.toLowerCase()}.com</li>
+                        <li>• Phone: +1-800-123-4567</li>
+                      </ul>
+                      <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <li>• Response time: Under 1 hour</li>
+                        <li>• Languages: 15+ supported</li>
+                        <li>• FAQ: Comprehensive knowledge base</li>
+                      </ul>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-sm sm:text-base text-red-600 mb-2 sm:mb-3">Cons</h4>
-                    <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-1.5 flex-shrink-0" />
-                        <span>Higher minimum deposit for some accounts</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-1.5 flex-shrink-0" />
-                        <span>Limited educational resources</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-1.5 flex-shrink-0" />
-                        <span>Customer support could be improved</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </section>
 
-            {/* Conclusion Section */}
-            <Card id="conclusion" className="forex-card">
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">Conclusion</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 sm:space-y-4">
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  {broker.brokerName} stands out as a reliable forex broker with strong regulatory oversight and
-                  competitive trading conditions. The broker offers a good selection of trading platforms and
-                  instruments, making it suitable for both beginner and experienced traders.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                  <Button className="bg-forex-green hover:bg-forex-darkGreen text-xs sm:text-sm">
-                    <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
-                    Visit {broker.brokerName}
-                  </Button>
-                  <Button variant="outline" className="text-xs sm:text-sm bg-transparent">
-                    <User className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
-                    Write a Review
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Education & Research */}
+            <section id="education-research" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">Education & Research</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 sm:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">Educational Resources</h4>
+                      <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <li>• Trading webinars</li>
+                        <li>• Video tutorials</li>
+                        <li>• E-books and guides</li>
+                        <li>• Trading glossary</li>
+                        <li>• Demo account</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">Market Analysis</h4>
+                      <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
+                        <li>• Daily market reports</li>
+                        <li>• Technical analysis</li>
+                        <li>• Economic calendar</li>
+                        <li>• Trading signals</li>
+                        <li>• Market news</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Final Verdict */}
+            <section id="final-verdict" className="mb-6 sm:mb-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">Final Verdict</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 sm:space-y-6">
+                  <div className="flex items-center gap-4 p-4 sm:p-6 bg-primary/5 rounded-lg">
+                    <div className="text-center">
+                      <div className="text-2xl sm:text-4xl font-bold text-primary">{broker.rating}</div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">Overall Score</div>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold mb-2 text-sm sm:text-base">Excellent Choice for Most Traders</h4>
+                      <p className="text-xs sm:text-sm text-muted-foreground">
+                        {broker.brokerName} offers a solid trading experience with competitive spreads, reliable
+                        regulation, and excellent customer support. Suitable for both beginners and experienced traders.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-primary">9.2</div>
+                      <div className="text-xs text-muted-foreground">Regulation</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-primary">8.8</div>
+                      <div className="text-xs text-muted-foreground">Platforms</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-primary">8.5</div>
+                      <div className="text-xs text-muted-foreground">Costs</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg sm:text-xl font-bold text-primary">9.0</div>
+                      <div className="text-xs text-muted-foreground">Support</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 pt-4">
+                    <Button asChild className="flex-1">
+                      <Link href={broker.website} target="_blank" rel="noopener noreferrer">
+                        Start Trading with {broker.brokerName}
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="outline" className="flex-1 bg-transparent">
+                      Compare with Other Brokers
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
           </div>
 
           {/* Sticky TOC Sidebar */}
-          <div className="hidden lg:block">
-            <div className="sticky top-4">
-              <Card className="forex-card">
+          <div className="hidden lg:block w-64 flex-shrink-0">
+            <div className="sticky top-4 space-y-4">
+              {/* Table of Contents */}
+              <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Table of Contents</CardTitle>
+                  <CardTitle className="text-base">Table of Contents</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <nav className="space-y-2">
+                <CardContent className="p-0">
+                  <nav className="space-y-1">
                     {tocItems.map((item) => (
-                      <a
+                      <button
                         key={item.id}
-                        href={`#${item.id}`}
-                        className={`block text-sm py-2 px-3 rounded-md transition-colors hover:bg-forex-green/10 hover:text-forex-green border-l-2 ${
+                        onClick={() => scrollToSection(item.id)}
+                        className={`w-full text-left px-4 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground ${
                           activeSection === item.id
-                            ? "border-forex-green text-forex-green bg-forex-green/5"
-                            : "border-transparent text-muted-foreground hover:border-forex-green/50"
+                            ? "bg-primary/10 text-primary border-r-2 border-primary"
+                            : "text-muted-foreground"
                         }`}
                       >
-                        {item.label}
-                      </a>
+                        {item.title}
+                      </button>
                     ))}
                   </nav>
                 </CardContent>
               </Card>
 
               {/* Quick Stats Card */}
-              <Card className="forex-card mt-4">
+              <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Quick Stats</CardTitle>
+                  <CardTitle className="text-base">Quick Stats</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Overall Rating</span>
-                    <span className="font-semibold">{broker.rating}/5.0</span>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Rating</span>
+                    <span className="font-medium">{broker.rating}/5</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Total Reviews</span>
-                    <span className="font-semibold">{broker.reviews}</span>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Min Deposit</span>
+                    <span className="font-medium">${broker.minDeposit}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Min Deposit</span>
-                    <span className="font-semibold">
-                      ${Math.min(...broker.accountTiers.map((tier) => tier.minimumDeposit))}
-                    </span>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Max Leverage</span>
+                    <span className="font-medium">{broker.maxLeverage}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Founded</span>
-                    <span className="font-semibold">{broker.founded}</span>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Spread</span>
+                    <span className="font-medium">{broker.spread}</span>
                   </div>
                   <Separator />
-                  <Button className="w-full bg-forex-green hover:bg-forex-darkGreen text-sm">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Visit Website
+                  <Button asChild className="w-full" size="sm">
+                    <Link href={broker.website} target="_blank" rel="noopener noreferrer">
+                      Visit Broker
+                      <ExternalLink className="ml-2 h-3 w-3" />
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
