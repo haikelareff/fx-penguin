@@ -67,9 +67,9 @@ export function BrokerReviewPage({
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
 
-      <main className="flex-1 container max-w-7xl mx-auto px-4 py-8">
+      <main className="flex-1 container max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+        <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6">
           <Link href="/" className="hover:text-forex-green">
             Home
           </Link>
@@ -88,45 +88,45 @@ export function BrokerReviewPage({
           <span className="text-foreground">Review</span>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
+        <div className="grid gap-4 sm:gap-8 lg:grid-cols-[1fr_300px]">
           {/* Main Content */}
-          <div className="space-y-8">
+          <div className="space-y-4 sm:space-y-8">
             {/* Header Section */}
-            <Card>
-              <CardContent className="p-8">
-                <div className="flex items-start gap-6">
-                  <Avatar className="h-20 w-20 border-2 border-border">
+            <Card id="overview">
+              <CardContent className="p-4 sm:p-8">
+                <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+                  <Avatar className="h-16 w-16 sm:h-20 sm:w-20 border-2 border-border mx-auto sm:mx-0">
                     <AvatarImage src={`/placeholder.svg?height=80&width=80`} alt={broker.brokerName} />
-                    <AvatarFallback className="text-2xl font-bold bg-forex-green/10 text-forex-green">
+                    <AvatarFallback className="text-xl sm:text-2xl font-bold bg-forex-green/10 text-forex-green">
                       {broker.brokerName.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
 
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h1 className="text-3xl font-bold">{review.brokerName} Review 2024</h1>
+                  <div className="flex-1 text-center sm:text-left">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 mb-2">
+                      <h1 className="text-xl sm:text-3xl font-bold">{review.brokerName} Review 2024</h1>
                       <Badge variant="outline" className="bg-forex-green/10 text-forex-green border-forex-green/20">
                         <Shield className="h-3 w-3 mr-1" />
                         Verified
                       </Badge>
                     </div>
 
-                    <div className="flex items-center gap-4 mb-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mb-4">
                       <div className="flex items-center gap-2">
                         <div className="flex">{renderStars(review.overallRating)}</div>
-                        <span className="text-2xl font-bold text-forex-green">{review.overallRating}</span>
-                        <span className="text-muted-foreground">({review.totalReviews} reviews)</span>
+                        <span className="text-xl sm:text-2xl font-bold text-forex-green">{review.overallRating}</span>
+                        <span className="text-sm text-muted-foreground">({review.totalReviews} reviews)</span>
                       </div>
-                      <Separator orientation="vertical" className="h-6" />
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
+                      <Separator orientation="vertical" className="h-6 hidden sm:block" />
+                      <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
+                        <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
                         Updated {new Date(review.lastUpdated).toLocaleDateString()}
                       </div>
                       {articleReview && (
                         <>
-                          <Separator orientation="vertical" className="h-6" />
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <Eye className="h-4 w-4" />
+                          <Separator orientation="vertical" className="h-6 hidden sm:block" />
+                          <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
+                            <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                             {articleReview.views.toLocaleString()} views
                           </div>
                         </>
@@ -134,40 +134,42 @@ export function BrokerReviewPage({
                     </div>
 
                     {articleReview && (
-                      <div className="flex items-center gap-4 mb-4">
+                      <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mb-4">
                         <div className="flex items-center gap-2">
-                          <Avatar className="h-6 w-6">
+                          <Avatar className="h-5 w-5 sm:h-6 sm:w-6">
                             <AvatarImage
                               src={articleReview.author.avatar || "/placeholder.svg"}
                               alt={articleReview.author.name}
                             />
                             <AvatarFallback className="text-xs">{articleReview.author.name.charAt(0)}</AvatarFallback>
                           </Avatar>
-                          <span className="text-sm font-medium">{articleReview.author.name}</span>
+                          <span className="text-xs sm:text-sm font-medium">{articleReview.author.name}</span>
                           <Badge variant="outline" className="text-xs">
                             {articleReview.author.credentials}
                           </Badge>
                         </div>
-                        <Separator orientation="vertical" className="h-4" />
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Separator orientation="vertical" className="h-4 hidden sm:block" />
+                        <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
                           <Clock className="h-3 w-3" />
                           {Math.ceil(articleReview.content.length / 1000)} min read
                         </div>
                       </div>
                     )}
 
-                    <p className="text-muted-foreground leading-relaxed mb-6">{review.overview}</p>
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4 sm:mb-6">
+                      {review.overview}
+                    </p>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
                       <div>
-                        <h3 className="font-semibold text-forex-green mb-3 flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4" />
+                        <h3 className="text-sm sm:text-base font-semibold text-forex-green mb-2 sm:mb-3 flex items-center gap-2">
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                           Pros
                         </h3>
-                        <ul className="space-y-2">
+                        <ul className="space-y-1 sm:space-y-2">
                           {(articleReview?.pros || review.pros).map((pro, index) => (
-                            <li key={index} className="flex items-start gap-2 text-sm">
-                              <div className="h-1.5 w-1.5 rounded-full bg-forex-green mt-2 flex-shrink-0" />
+                            <li key={index} className="flex items-start gap-2 text-xs sm:text-sm">
+                              <div className="h-1.5 w-1.5 rounded-full bg-forex-green mt-1.5 sm:mt-2 flex-shrink-0" />
                               {pro}
                             </li>
                           ))}
@@ -175,14 +177,14 @@ export function BrokerReviewPage({
                       </div>
 
                       <div>
-                        <h3 className="font-semibold text-forex-red mb-3 flex items-center gap-2">
-                          <XCircle className="h-4 w-4" />
+                        <h3 className="text-sm sm:text-base font-semibold text-forex-red mb-2 sm:mb-3 flex items-center gap-2">
+                          <XCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                           Cons
                         </h3>
-                        <ul className="space-y-2">
+                        <ul className="space-y-1 sm:space-y-2">
                           {(articleReview?.cons || review.cons).map((con, index) => (
-                            <li key={index} className="flex items-start gap-2 text-sm">
-                              <div className="h-1.5 w-1.5 rounded-full bg-forex-red mt-2 flex-shrink-0" />
+                            <li key={index} className="flex items-start gap-2 text-xs sm:text-sm">
+                              <div className="h-1.5 w-1.5 rounded-full bg-forex-red mt-1.5 sm:mt-2 flex-shrink-0" />
                               {con}
                             </li>
                           ))}
@@ -191,12 +193,12 @@ export function BrokerReviewPage({
                     </div>
 
                     {articleReview?.verdict && (
-                      <div className="mt-6 p-4 bg-forex-green/5 border border-forex-green/20 rounded-lg">
-                        <h3 className="font-semibold text-forex-green mb-2 flex items-center gap-2">
-                          <Award className="h-4 w-4" />
+                      <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-forex-green/5 border border-forex-green/20 rounded-lg">
+                        <h3 className="text-sm sm:text-base font-semibold text-forex-green mb-2 flex items-center gap-2">
+                          <Award className="h-3 w-3 sm:h-4 sm:w-4" />
                           Expert Verdict
                         </h3>
-                        <p className="text-sm text-muted-foreground">{articleReview.verdict}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">{articleReview.verdict}</p>
                       </div>
                     )}
                   </div>
@@ -205,7 +207,7 @@ export function BrokerReviewPage({
             </Card>
 
             {/* Rating Breakdown */}
-            <Card>
+            <Card id="rating-breakdown">
               <CardHeader>
                 <CardTitle>Rating Breakdown</CardTitle>
               </CardHeader>
@@ -237,7 +239,7 @@ export function BrokerReviewPage({
 
             {/* Article Content */}
             {articleReview && (
-              <Card>
+              <Card id="complete-review">
                 <CardHeader>
                   <CardTitle>Complete Review Analysis</CardTitle>
                 </CardHeader>
@@ -266,7 +268,7 @@ export function BrokerReviewPage({
                   </TabsList>
 
                   <div className="p-6">
-                    <TabsContent value="business-scope" className="space-y-6">
+                    <TabsContent value="business-scope" className="space-y-6" id="business-scope">
                       <div>
                         <h3 className="font-semibold mb-3">Regulation & Compliance</h3>
                         <p className="text-muted-foreground mb-4">{detailedReview.businessScope.regulation}</p>
@@ -295,7 +297,7 @@ export function BrokerReviewPage({
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="cost" className="space-y-6">
+                    <TabsContent value="cost" className="space-y-6" id="cost-analysis">
                       <div>
                         <h3 className="font-semibold mb-3">Spreads</h3>
                         <p className="text-muted-foreground">{detailedReview.cost.spreads}</p>
@@ -324,7 +326,7 @@ export function BrokerReviewPage({
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="platform" className="space-y-6">
+                    <TabsContent value="platform" className="space-y-6" id="platform-review">
                       <div>
                         <h3 className="font-semibold mb-3">Available Platforms</h3>
                         <div className="grid md:grid-cols-2 gap-4">
@@ -359,7 +361,7 @@ export function BrokerReviewPage({
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="support" className="space-y-6">
+                    <TabsContent value="support" className="space-y-6" id="customer-support">
                       <div>
                         <h3 className="font-semibold mb-3">Availability</h3>
                         <p className="text-muted-foreground">{detailedReview.support.availability}</p>
@@ -394,7 +396,7 @@ export function BrokerReviewPage({
                       </div>
                     </TabsContent>
 
-                    <TabsContent value="community" className="space-y-6">
+                    <TabsContent value="community" className="space-y-6" id="user-reviews">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <h3 className="font-semibold">User Reviews</h3>
@@ -536,7 +538,7 @@ export function BrokerReviewPage({
 
             {/* FAQ Section */}
             {articleReview?.faq && articleReview.faq.length > 0 && (
-              <Card>
+              <Card id="faq">
                 <CardHeader>
                   <CardTitle>Frequently Asked Questions</CardTitle>
                 </CardHeader>
@@ -554,18 +556,91 @@ export function BrokerReviewPage({
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
+            {/* Table of Contents - Sticky */}
+            <div className="sticky top-4 hidden lg:block">
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">Table of Contents</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <nav className="space-y-1">
+                    <a
+                      href="#overview"
+                      className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                    >
+                      Overview
+                    </a>
+                    <a
+                      href="#rating-breakdown"
+                      className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                    >
+                      Rating Breakdown
+                    </a>
+                    {articleReview && (
+                      <a
+                        href="#complete-review"
+                        className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                      >
+                        Complete Review
+                      </a>
+                    )}
+                    <a
+                      href="#business-scope"
+                      className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                    >
+                      Business Scope
+                    </a>
+                    <a
+                      href="#cost-analysis"
+                      className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                    >
+                      Cost Analysis
+                    </a>
+                    <a
+                      href="#platform-review"
+                      className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                    >
+                      Platform Review
+                    </a>
+                    <a
+                      href="#customer-support"
+                      className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                    >
+                      Customer Support
+                    </a>
+                    <a
+                      href="#user-reviews"
+                      className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                    >
+                      User Reviews
+                    </a>
+                    {articleReview?.faq && articleReview.faq.length > 0 && (
+                      <a
+                        href="#faq"
+                        className="block text-sm text-muted-foreground hover:text-forex-green transition-colors py-1 border-l-2 border-transparent hover:border-forex-green pl-3"
+                      >
+                        FAQ
+                      </a>
+                    )}
+                  </nav>
+                </CardContent>
+              </Card>
+            </div>
+
             {/* Quick Actions */}
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Quick Actions</CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base sm:text-lg">Quick Actions</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <Button className="w-full bg-forex-green hover:bg-forex-darkGreen">Visit {broker.brokerName}</Button>
-                <Button variant="outline" className="w-full bg-transparent">
+              <CardContent className="space-y-2 sm:space-y-3">
+                <Button className="w-full bg-forex-green hover:bg-forex-darkGreen text-sm">
+                  Visit {broker.brokerName}
+                </Button>
+                <Button variant="outline" className="w-full bg-transparent text-sm">
                   Compare Brokers
                 </Button>
-                <Button variant="outline" className="w-full bg-transparent">
+                <Button variant="outline" className="w-full bg-transparent text-sm">
                   Read More Reviews
                 </Button>
               </CardContent>
@@ -573,29 +648,29 @@ export function BrokerReviewPage({
 
             {/* Key Information */}
             <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Key Information</CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base sm:text-lg">Key Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 sm:space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Founded</span>
-                  <span className="text-sm font-medium">{broker.founded}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Founded</span>
+                  <span className="text-xs sm:text-sm font-medium">{broker.founded}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Headquarters</span>
-                  <span className="text-sm font-medium">{broker.headquarters}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Headquarters</span>
+                  <span className="text-xs sm:text-sm font-medium">{broker.headquarters}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Regulation</span>
-                  <span className="text-sm font-medium">{broker.regulation}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Regulation</span>
+                  <span className="text-xs sm:text-sm font-medium">{broker.regulation}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Min Deposit</span>
-                  <span className="text-sm font-medium">${broker.minDeposit}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Min Deposit</span>
+                  <span className="text-xs sm:text-sm font-medium">${broker.minDeposit}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Max Leverage</span>
-                  <span className="text-sm font-medium">1:{broker.maxLeverage}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">Max Leverage</span>
+                  <span className="text-xs sm:text-sm font-medium">1:{broker.maxLeverage}</span>
                 </div>
               </CardContent>
             </Card>
@@ -603,21 +678,21 @@ export function BrokerReviewPage({
             {/* Related Brokers */}
             {articleReview?.relatedBrokers && articleReview.relatedBrokers.length > 0 && (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Related Brokers</CardTitle>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base sm:text-lg">Related Brokers</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-2 sm:space-y-3">
                   {articleReview.relatedBrokers.map((relatedBroker, index) => (
                     <Link
                       key={index}
                       href={`/broker/${relatedBroker.toLowerCase().replace(/\s+/g, "-")}/review`}
-                      className="block p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                      className="block p-2 sm:p-3 rounded-lg border hover:bg-muted/50 transition-colors"
                     >
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
                           <AvatarFallback className="text-xs">{relatedBroker.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <span className="text-sm font-medium">{relatedBroker}</span>
+                        <span className="text-xs sm:text-sm font-medium">{relatedBroker}</span>
                       </div>
                     </Link>
                   ))}
@@ -628,17 +703,17 @@ export function BrokerReviewPage({
             {/* Helpful Votes */}
             {articleReview && (
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Was this review helpful?</CardTitle>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base sm:text-lg">Was this review helpful?</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex gap-3">
-                    <Button variant="outline" className="flex-1 bg-transparent">
-                      <ThumbsUp className="h-4 w-4 mr-2" />
+                <CardContent className="space-y-3 sm:space-y-4">
+                  <div className="flex gap-2 sm:gap-3">
+                    <Button variant="outline" className="flex-1 bg-transparent text-xs sm:text-sm">
+                      <ThumbsUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       Yes ({articleReview.helpfulVotes})
                     </Button>
-                    <Button variant="outline" className="flex-1 bg-transparent">
-                      <ThumbsDown className="h-4 w-4 mr-2" />
+                    <Button variant="outline" className="flex-1 bg-transparent text-xs sm:text-sm">
+                      <ThumbsDown className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       No ({articleReview.totalVotes - articleReview.helpfulVotes})
                     </Button>
                   </div>
