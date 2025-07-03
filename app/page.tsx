@@ -219,12 +219,12 @@ export default function HomePage() {
 
                   <div className="flex space-x-2 pt-2">
                     <Link href={`/broker/${broker.name.toLowerCase().replace(/\s+/g, "-")}`} className="flex-1">
-                      <Button variant="outline" className="w-full bg-transparent">
+                      <Button variant="outline" className="w-md bg-transparent">
                         View Details
                       </Button>
                     </Link>
                     <Link href={`/broker/${broker.name.toLowerCase().replace(/\s+/g, "-")}/review`} className="flex-1">
-                      <Button className="w-full">Read Reviews</Button>
+                      <Button className="w-md">Read Reviews</Button>
                     </Link>
                   </div>
                 </CardContent>
