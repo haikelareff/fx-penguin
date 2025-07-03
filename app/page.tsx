@@ -7,24 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Header } from "@/components/header"
-import { TradingStats } from "@/components/trading-stats"
-import { MarketTrends } from "@/components/market-trends"
-import { BrokerCategories } from "@/components/broker-categories"
-import {
-  ArrowRight,
-  BarChart3,
-  BookOpen,
-  Calendar,
-  ChevronRight,
-  Clock,
-  Globe,
-  Newspaper,
-  Shield,
-  Star,
-  TrendingUp,
-  Users,
-  Zap,
-} from "lucide-react"
+import { Calendar, ChevronRight, Clock, Globe, Newspaper, Star, Users, Zap } from "lucide-react"
 
 const topBrokers = [
   {
@@ -65,6 +48,48 @@ const topBrokers = [
   },
 ]
 
+const newcomerBrokers = [
+  {
+    id: 4,
+    name: "NextGen Forex",
+    logo: "/placeholder-logo.svg",
+    rating: 4.5,
+    reviews: 234,
+    minDeposit: "$25",
+    spread: "0.2 pips",
+    leverage: "1:200",
+    regulation: "FCA",
+    features: ["AI Trading", "Zero Commission", "Instant Deposits"],
+    isNew: true,
+  },
+  {
+    id: 5,
+    name: "SwiftTrade",
+    logo: "/placeholder-logo.svg",
+    rating: 4.4,
+    reviews: 156,
+    minDeposit: "$100",
+    spread: "0.3 pips",
+    leverage: "1:300",
+    regulation: "CySEC",
+    features: ["Fast Execution", "Mobile First", "Social Copy"],
+    isNew: true,
+  },
+  {
+    id: 6,
+    name: "ProTrader Hub",
+    logo: "/placeholder-logo.svg",
+    rating: 4.3,
+    reviews: 89,
+    minDeposit: "$200",
+    spread: "0.4 pips",
+    leverage: "1:400",
+    regulation: "ASIC",
+    features: ["Advanced Charts", "API Access", "Custom Indicators"],
+    isNew: true,
+  },
+]
+
 const industryNews = [
   {
     id: 1,
@@ -101,33 +126,6 @@ const industryNews = [
   },
 ]
 
-const educationContent = [
-  {
-    title: "Forex Fundamentals",
-    description: "Master the basics of currency trading",
-    lessons: 12,
-    duration: "2 hours",
-    level: "Beginner",
-    icon: BookOpen,
-  },
-  {
-    title: "Technical Analysis",
-    description: "Learn chart patterns and indicators",
-    lessons: 18,
-    duration: "3 hours",
-    level: "Intermediate",
-    icon: BarChart3,
-  },
-  {
-    title: "Risk Management",
-    description: "Protect your capital with proven strategies",
-    lessons: 8,
-    duration: "1.5 hours",
-    level: "Advanced",
-    icon: Shield,
-  },
-]
-
 const upcomingEvents = [
   {
     title: "Weekly Trading Contest",
@@ -157,61 +155,13 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-to-br from-forex-green/5 via-background to-forex-green/5">
-        <div className="container mx-auto text-center">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-forex-green rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                🐧
-              </div>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-forex-green to-forex-darkGreen bg-clip-text text-transparent">
-              Welcome to FX Penguin
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Your trusted companion in the world of forex trading. Discover top-rated brokers, expert analysis, and
-              educational resources to elevate your trading journey.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/dashboard">
-                <Button size="lg" className="bg-forex-green hover:bg-forex-darkGreen text-white px-8 py-3">
-                  <BarChart3 className="mr-2 h-5 w-5" />
-                  Get Started
-                </Button>
-              </Link>
-              <Link href="/brokers">
-                <Button size="lg" variant="outline" className="px-8 py-3 bg-transparent">
-                  Find Top Brokers
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="/education">
-                <Button size="lg" variant="ghost" className="px-8 py-3">
-                  <BookOpen className="mr-2 h-5 w-5" />
-                  Start Learning
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Platform Stats */}
-      <section className="py-16 px-4 bg-muted/30">
-        <div className="container mx-auto">
-          <TradingStats />
-        </div>
-      </section>
-
       {/* Top Rated Brokers */}
-      <section className="py-16 px-4">
+      <section className="py-12 px-4">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Top Rated Brokers</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Discover the most trusted and highly-rated forex brokers, carefully evaluated by our expert team and
-              community.
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">Top Rated Brokers</h2>
+            <p className="text-base text-muted-foreground max-w-xl mx-auto">
+              Discover the most trusted and highly-rated forex brokers, carefully evaluated by our expert team.
             </p>
           </div>
 
@@ -231,7 +181,7 @@ export default function HomePage() {
                         </div>
                       </div>
                     </div>
-                    <Badge className="bg-forex-green/10 text-forex-green hover:bg-forex-green/20">
+                    <Badge className="bg-primary/10 text-primary hover:bg-primary/20">
                       {broker.regulation.split(",")[0]}
                     </Badge>
                   </div>
@@ -274,7 +224,7 @@ export default function HomePage() {
                       </Button>
                     </Link>
                     <Link href={`/broker/${broker.name.toLowerCase().replace(/\s+/g, "-")}/review`} className="flex-1">
-                      <Button className="w-full bg-forex-green hover:bg-forex-darkGreen">Read Reviews</Button>
+                      <Button className="w-full">Read Reviews</Button>
                     </Link>
                   </div>
                 </CardContent>
@@ -293,12 +243,105 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Industry News */}
-      <section className="py-16 px-4 bg-muted/30">
+      {/* Newcomer Brokers */}
+      <section className="py-12 px-4 bg-muted/30">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Industry News</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">New & Rising Brokers</h2>
+            <p className="text-base text-muted-foreground max-w-xl mx-auto">
+              Explore promising new brokers making waves in the forex industry with innovative features.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {newcomerBrokers.map((broker) => (
+              <Card key={broker.id} className="hover:shadow-lg transition-shadow relative">
+                {broker.isNew && (
+                  <div className="absolute -top-2 -right-2 z-10">
+                    <Badge className="bg-green-500 hover:bg-green-600 text-white">NEW</Badge>
+                  </div>
+                )}
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <img src={broker.logo || "/placeholder.svg"} alt={broker.name} className="w-10 h-10 rounded-lg" />
+                      <div>
+                        <CardTitle className="text-lg">{broker.name}</CardTitle>
+                        <div className="flex items-center space-x-1">
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <span className="font-semibold">{broker.rating}</span>
+                          <span className="text-sm text-muted-foreground">({broker.reviews} reviews)</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Badge className="bg-primary/10 text-primary hover:bg-primary/20">
+                      {broker.regulation.split(",")[0]}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Min Deposit:</span>
+                      <p className="font-semibold">{broker.minDeposit}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Spread:</span>
+                      <p className="font-semibold">{broker.spread}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Leverage:</span>
+                      <p className="font-semibold">{broker.leverage}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Regulation:</span>
+                      <p className="font-semibold">{broker.regulation}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">Key Features:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {broker.features.map((feature, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {feature}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-2 pt-2">
+                    <Link href={`/broker/${broker.name.toLowerCase().replace(/\s+/g, "-")}`} className="flex-1">
+                      <Button variant="outline" className="w-full bg-transparent">
+                        View Details
+                      </Button>
+                    </Link>
+                    <Link href={`/broker/${broker.name.toLowerCase().replace(/\s+/g, "-")}/review`} className="flex-1">
+                      <Button className="w-full">Read Reviews</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link href="/brokers">
+              <Button variant="outline" size="lg">
+                Discover More Brokers
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Industry News */}
+      <section className="py-12 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">Industry News</h2>
+            <p className="text-base text-muted-foreground max-w-xl mx-auto">
               Stay updated with the latest developments in the forex market and trading industry.
             </p>
           </div>
@@ -350,89 +393,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Market Analysis Preview */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Market Analysis</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Get expert insights and real-time market data to make informed trading decisions.
-            </p>
-          </div>
-
-          <MarketTrends />
-
-          <div className="text-center mt-8">
-            <Link href="/market-analysis">
-              <Button size="lg" className="bg-forex-green hover:bg-forex-darkGreen">
-                <TrendingUp className="mr-2 h-5 w-5" />
-                View Full Analysis
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Education Preview */}
-      <section className="py-16 px-4 bg-muted/30">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Learn to Trade</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Master forex trading with our comprehensive educational resources and expert-led courses.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {educationContent.map((course, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardHeader className="text-center pb-4">
-                  <div className="w-12 h-12 bg-forex-green/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <course.icon className="w-6 h-6 text-forex-green" />
-                  </div>
-                  <CardTitle className="text-xl">{course.title}</CardTitle>
-                  <CardDescription>{course.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="text-center space-y-4">
-                  <div className="flex justify-center space-x-4 text-sm text-muted-foreground">
-                    <span>{course.lessons} lessons</span>
-                    <Separator orientation="vertical" className="h-4" />
-                    <span>{course.duration}</span>
-                  </div>
-                  <Badge
-                    variant={
-                      course.level === "Beginner"
-                        ? "default"
-                        : course.level === "Intermediate"
-                          ? "secondary"
-                          : "outline"
-                    }
-                  >
-                    {course.level}
-                  </Badge>
-                  <Button className="w-full bg-forex-green hover:bg-forex-darkGreen">Start Learning</Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Link href="/education">
-              <Button variant="outline" size="lg">
-                <BookOpen className="mr-2 h-5 w-5" />
-                Explore All Courses
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Events & Promotions */}
-      <section className="py-16 px-4">
+      <section className="py-12 px-4 bg-muted/30">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Events & Promotions</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">Events & Promotions</h2>
+            <p className="text-base text-muted-foreground max-w-xl mx-auto">
               Join exciting trading contests, educational webinars, and take advantage of exclusive broker promotions.
             </p>
           </div>
@@ -462,7 +428,7 @@ export default function HomePage() {
                     <Calendar className="w-4 h-4 mr-2" />
                     {event.date}
                   </div>
-                  <Button className="w-full bg-forex-green hover:bg-forex-darkGreen">
+                  <Button className="w-full">
                     {event.type === "Contest"
                       ? "Join Contest"
                       : event.type === "Webinar"
@@ -485,20 +451,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Broker Categories */}
-      <section className="py-16 px-4 bg-muted/30">
-        <div className="container mx-auto">
-          <BrokerCategories />
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="bg-background border-t py-12 px-4">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-forex-green rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
                   🐧
                 </div>
                 <span className="font-bold text-xl">FX Penguin</span>
@@ -511,22 +470,19 @@ export default function HomePage() {
             <div className="space-y-4">
               <h3 className="font-semibold">Platform</h3>
               <div className="space-y-2 text-sm">
-                <Link href="/brokers" className="block text-muted-foreground hover:text-forex-green transition-colors">
+                <Link href="/brokers" className="block text-muted-foreground hover:text-primary transition-colors">
                   Brokers
                 </Link>
-                <Link href="/reviews" className="block text-muted-foreground hover:text-forex-green transition-colors">
+                <Link href="/reviews" className="block text-muted-foreground hover:text-primary transition-colors">
                   Reviews
                 </Link>
                 <Link
                   href="/market-analysis"
-                  className="block text-muted-foreground hover:text-forex-green transition-colors"
+                  className="block text-muted-foreground hover:text-primary transition-colors"
                 >
                   Market Analysis
                 </Link>
-                <Link
-                  href="/education"
-                  className="block text-muted-foreground hover:text-forex-green transition-colors"
-                >
+                <Link href="/education" className="block text-muted-foreground hover:text-primary transition-colors">
                   Education
                 </Link>
               </div>
@@ -535,22 +491,16 @@ export default function HomePage() {
             <div className="space-y-4">
               <h3 className="font-semibold">Resources</h3>
               <div className="space-y-2 text-sm">
-                <Link
-                  href="/promo-events"
-                  className="block text-muted-foreground hover:text-forex-green transition-colors"
-                >
+                <Link href="/promo-events" className="block text-muted-foreground hover:text-primary transition-colors">
                   Events & Promos
                 </Link>
-                <Link
-                  href="/dashboard"
-                  className="block text-muted-foreground hover:text-forex-green transition-colors"
-                >
+                <Link href="/dashboard" className="block text-muted-foreground hover:text-primary transition-colors">
                   Dashboard
                 </Link>
-                <a href="#" className="block text-muted-foreground hover:text-forex-green transition-colors">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">
                   API Documentation
                 </a>
-                <a href="#" className="block text-muted-foreground hover:text-forex-green transition-colors">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">
                   Help Center
                 </a>
               </div>
@@ -559,16 +509,16 @@ export default function HomePage() {
             <div className="space-y-4">
               <h3 className="font-semibold">Company</h3>
               <div className="space-y-2 text-sm">
-                <a href="#" className="block text-muted-foreground hover:text-forex-green transition-colors">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">
                   About Us
                 </a>
-                <a href="#" className="block text-muted-foreground hover:text-forex-green transition-colors">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">
                   Contact
                 </a>
-                <a href="#" className="block text-muted-foreground hover:text-forex-green transition-colors">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">
                   Privacy Policy
                 </a>
-                <a href="#" className="block text-muted-foreground hover:text-forex-green transition-colors">
+                <a href="#" className="block text-muted-foreground hover:text-primary transition-colors">
                   Terms of Service
                 </a>
               </div>
