@@ -33,8 +33,7 @@ export function Header() {
                   </Link>
                   <Link href="#" className="text-sm font-medium hover:text-npm-red transition-colors">
                     Teams
-                  </Link>
-                  <Link href="#" className="text-sm font-medium hover:text-npm-red transition-colors">
+                  </LiFX Penguin            <Link href="#" className="text-sm font-medium hover:text-npm-red transition-colors">
                     Pricing
                   </Link>
                   <Link href="#" className="text-sm font-medium hover:text-npm-red transition-colors">
