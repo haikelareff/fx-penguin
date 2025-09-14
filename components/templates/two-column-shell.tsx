@@ -1,4 +1,5 @@
 import type React from "react"
+import { Suspense } from "react"
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -43,11 +44,15 @@ export function TwoColumnShell({ leftColumn, rightColumn }: TwoColumnShellProps)
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Sticky with column layout */}
           <div className="lg:sticky lg:top-24 lg:h-fit">
-            <div className="flex flex-col space-y-6">{leftColumn}</div>
+            <div className="flex flex-col space-y-6">
+              <Suspense fallback={<div className="animate-pulse bg-muted rounded-lg h-64" />}>{leftColumn}</Suspense>
+            </div>
           </div>
 
           {/* Right Column - Scrollable with column layout */}
-          <div className="flex flex-col space-y-8">{rightColumn}</div>
+          <div className="flex flex-col space-y-8">
+            <Suspense fallback={<div className="animate-pulse bg-muted rounded-lg h-96" />}>{rightColumn}</Suspense>
+          </div>
         </div>
       </main>
 
