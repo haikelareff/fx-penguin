@@ -41,7 +41,7 @@ FX Penguin is a comprehensive forex trading platform and broker review aggregato
 
 ## 📁 Project Structure
 
-```
+\`\`\`
 fx-penguin/
 ├── app/                    # Next.js app directory
 │   ├── (auth)/            # Authentication pages
@@ -60,7 +60,7 @@ fx-penguin/
 ├── docs/                 # Documentation files
 ├── public/               # Static assets
 └── types/                # TypeScript type definitions
-```
+\`\`\`
 
 ## 🚀 Getting Started
 
@@ -73,43 +73,43 @@ fx-penguin/
 ### Installation
 
 1. **Clone the repository**
-   ```bash
+   \`\`\`bash
    git clone https://github.com/your-username/fx-penguin.git
    cd fx-penguin
-   ```
+   \`\`\`
 
 2. **Install dependencies**
-   ```bash
+   \`\`\`bash
    npm install
    # or
    yarn install
    # or
    pnpm install
-   ```
+   \`\`\`
 
 3. **Set up Convex backend**
-   ```bash
+   \`\`\`bash
    npx convex dev
-   ```
+   \`\`\`
 
 4. **Configure environment variables**
-   ```bash
+   \`\`\`bash
    cp .env.example .env.local
-   ```
+   \`\`\`
    Fill in your environment variables:
-   ```env
+   \`\`\`env
    CONVEX_DEPLOYMENT=your-convex-deployment-url
    NEXT_PUBLIC_CONVEX_URL=your-convex-url
-   ```
+   \`\`\`
 
 5. **Run the development server**
-   ```bash
+   \`\`\`bash
    npm run dev
    # or
    yarn dev
    # or
    pnpm dev
-   ```
+   \`\`\`
 
 6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
