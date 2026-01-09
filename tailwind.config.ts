@@ -53,12 +53,11 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        npm: {
-          red: "#cb3837",
-          darkRed: "#ab3331",
-          lightRed: "#e05e5d",
-          gray: "#231f20",
-          lightGray: "#f2f2f2",
+        forex: {
+          green: "hsl(var(--forex-green))",
+          darkGreen: "hsl(var(--forex-darkGreen))",
+          blue: "hsl(var(--forex-blue))",
+          darkBlue: "hsl(var(--forex-darkBlue))",
         },
       },
       borderRadius: {
@@ -75,19 +74,10 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        shimmer: {
-          "0%": { backgroundPosition: "-1000px 0" },
-          "100%": { backgroundPosition: "1000px 0" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        shimmer: "shimmer 2s infinite linear",
-      },
-      boxShadow: {
-        subtle: "0 2px 10px rgba(0, 0, 0, 0.05)",
-        card: "0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1)",
       },
     },
   },
